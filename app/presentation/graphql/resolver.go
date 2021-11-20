@@ -8,4 +8,5 @@ import "github.com/amasok/sample-graphql/app/presentation/graphql/model"
 
 type Resolver struct {
 	todos []*model.Todo
+	users []*model.User
 }
