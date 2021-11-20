@@ -1,6 +1,6 @@
-package graph
+package graphql
 
-import "github.com/amasok/sample-grahql/graph/model"
+import "github.com/amasok/sample-graphql/app/presentation/graphql/model"
 
 // This file will not be regenerated automatically.
 //

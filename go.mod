@@ -1,4 +1,4 @@
-module github.com/amasok/sample-grahql
+module github.com/amasok/sample-graphql
 
 go 1.17
 
