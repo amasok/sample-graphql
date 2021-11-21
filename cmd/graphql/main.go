@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/amasok/sample-graphql/app/middleware"
 	"github.com/amasok/sample-graphql/app/presentation/graphql"
 	"github.com/amasok/sample-graphql/app/presentation/graphql/generated"
 	"github.com/gorilla/mux"
@@ -21,7 +22,7 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-
+	r.Use(middleware.CORSForGraphql)
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graphql.Resolver{}}))
 
 	r.Handle("/", playground.Handler("GraphQL playground", "/query"))
