@@ -54,12 +54,12 @@ func SetToken(parents context.Context, t authToken) context.Context {
 	return context.WithValue(parents, contextKey, &t)
 }
 
-func GetToken(ctx context.Context) (string, error) {
+func GetToken(ctx context.Context) (*authToken, error) {
 	v := ctx.Value(contextKey)
 
-	token, ok := v.(string)
+	token, ok := v.(*authToken)
 	if !ok {
-		return "", fmt.Errorf("token not found")
+		return nil, fmt.Errorf("token not found")
 	}
 
 	return token, nil
@@ -79,11 +79,6 @@ func GenerateAuthByToken(tokenString string) (authToken, error) {
 		token:  token.Raw,
 	}, nil
 
-}
-
-func CtxValue(ctx context.Context) *authToken {
-	raw, _ := ctx.Value(contextKey).(*authToken)
-	return raw
 }
 
 func (a authToken) GetUserID() string {
