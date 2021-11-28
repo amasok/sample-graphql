@@ -20,7 +20,8 @@ func AuthForGraphql(next http.Handler) http.Handler {
 
 		token, err := authToken.GenerateAuthByToken(auth)
 		if err != nil {
-			http.Error(w, "Invalid token", http.StatusForbidden)
+			// @トークンエラーだったとしてもauthディレクティブでエラーを返すようにする
+			next.ServeHTTP(w, r)
 			return
 		}
 
