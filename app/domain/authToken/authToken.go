@@ -50,10 +50,12 @@ func New(userID string, now time.Time) (*authToken, error) {
 	}, nil
 }
 
+// contextにトークンをセットする
 func SetToken(parents context.Context, t authToken) context.Context {
 	return context.WithValue(parents, contextKey, &t)
 }
 
+// contextからトークンを取得する
 func GetToken(ctx context.Context) (*authToken, error) {
 	v := ctx.Value(contextKey)
 

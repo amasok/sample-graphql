@@ -9,7 +9,7 @@ import (
 	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
-func Auth(ctx context.Context, obj interface{}, next graphql.Resolver) (res interface{}, err error) {
+func Auth(ctx context.Context, _ interface{}, next graphql.Resolver) (res interface{}, err error) {
 	tokenData, err := authToken.GetToken(ctx)
 	if err != nil {
 		return nil, &gqlerror.Error{
