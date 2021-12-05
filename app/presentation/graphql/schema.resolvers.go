@@ -7,7 +7,9 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"time"
 
+	"github.com/amasok/sample-graphql/app/domain/authToken"
 	"github.com/amasok/sample-graphql/app/presentation/graphql/generated"
 	"github.com/amasok/sample-graphql/app/presentation/graphql/model"
 )
@@ -35,11 +37,39 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
 	user := &model.User{
-		ID:   fmt.Sprintf("T%d", rand.Int()),
-		Name: input.Name,
+		ID:       fmt.Sprintf("T%d", rand.Int()),
+		Name:     input.Name,
+		Email:    input.Email,
+		Password: input.Password,
 	}
 	r.users = append(r.users, user)
 	return user, nil
+}
+
+func (r *mutationResolver) Authorization(ctx context.Context, input model.AuthorizationRequest) (*model.AuthorizationResponse, error) {
+	// panic(fmt.Errorf("not implemented"))
+	var findUser *model.User
+	for _, user := range r.users {
+		// まだちゃんとした実装でないため全件回してとってきてる
+		if user.Email == input.Email && user.Password == input.Password {
+			findUser = user
+			break
+		}
+	}
+
+	if findUser == nil {
+		// FIXME: 本来セキュリティ的にメールアドレスをログに出すべきでない
+		return nil, fmt.Errorf("not found user_email: %s", input.Email)
+	}
+
+	authToken, err := authToken.New(findUser.ID, time.Now())
+	if err != nil {
+		return nil, err
+	}
+
+	return &model.AuthorizationResponse{
+		Token: authToken.GetToken(),
+	}, nil
 }
 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {

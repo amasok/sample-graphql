@@ -2,6 +2,8 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @auth on FIELD_DEFINITION
+
 type Todo {
   id: ID!
   text: String!
@@ -12,10 +14,12 @@ type Todo {
 type User {
   id: ID!
   name: String!
+  email: String!
+  password: String!
 }
 
 type Query {
-  todos: [Todo!]!
+  todos: [Todo!]! @auth
   users: [User!]!
 }
 
@@ -26,9 +30,21 @@ input NewTodo {
 
 input NewUser {
   name: String!
+  email: String!
+  password: String!
+}
+
+input AuthorizationRequest {
+  email: String!
+  password: String!
+}
+
+type AuthorizationResponse {
+  token: String!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createTodo(input: NewTodo!): Todo! @auth
   createUser(input: NewUser!): User!
+  authorization(input: AuthorizationRequest!): AuthorizationResponse! # 認可
 }

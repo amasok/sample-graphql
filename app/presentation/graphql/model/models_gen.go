@@ -2,13 +2,24 @@
 
 package model
 
+type AuthorizationRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type AuthorizationResponse struct {
+	Token string `json:"token"`
+}
+
 type NewTodo struct {
 	Text   string `json:"text"`
 	UserID string `json:"userId"`
 }
 
 type NewUser struct {
-	Name string `json:"name"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type Todo struct {
@@ -19,6 +30,8 @@ type Todo struct {
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
